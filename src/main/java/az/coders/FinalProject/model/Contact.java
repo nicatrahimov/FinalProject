@@ -32,6 +32,4 @@ public class Contact {
     @ManyToOne
     @JoinColumn(name = "company_id",referencedColumnName = "id")
     Company company;
-    @OneToMany(mappedBy = "contact",cascade = CascadeType.ALL)
-    Set<Email>receivedEmails;
 }
