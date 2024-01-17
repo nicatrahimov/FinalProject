@@ -4,6 +4,7 @@ import az.coders.FinalProject.enums.PeopleGroup;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.Set;
 
@@ -24,6 +25,12 @@ public class Contact {
     String country;
     @Enumerated(EnumType.STRING)
     PeopleGroup peopleGroup;
+    @PrePersist
+    public void prePersist(){
+        if (peopleGroup==null){
+            peopleGroup=PeopleGroup.CLIENT;
+        }
+    }
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id" ,referencedColumnName = "id")

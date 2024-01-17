@@ -1,13 +1,10 @@
 package az.coders.FinalProject.service.Impl;
 
 import az.coders.FinalProject.dto.converter.ContactDtoConverter;
-import az.coders.FinalProject.dto.response.ContactCompanyDto;
+import az.coders.FinalProject.dto.request.ContactRequestDto;
 import az.coders.FinalProject.dto.response.ContactResponseDto;
-import az.coders.FinalProject.dto.response.ImageResponseDto;
 import az.coders.FinalProject.exception.ContactNotFound;
-import az.coders.FinalProject.model.Company;
 import az.coders.FinalProject.model.Contact;
-import az.coders.FinalProject.model.Image;
 import az.coders.FinalProject.repository.ContactRepository;
 import az.coders.FinalProject.service.ContactService;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +27,7 @@ public class ContactServiceImpl implements ContactService {
         List<ContactResponseDto>allDto = new ArrayList<>();
 
         for(Contact contact:all){
-            ContactResponseDto contactDto = dtoConverter.toContactDto(contact);
+            ContactResponseDto contactDto = dtoConverter.toContactRespDto(contact);
             allDto.add(contactDto);
         }
         return allDto;
@@ -39,7 +36,7 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public ContactResponseDto getContactById(String id) {
         Contact contact = contactRepository.findById(id).orElseThrow(ContactNotFound::new);
-        return dtoConverter.toContactDto(contact);
+        return dtoConverter.toContactRespDto(contact);
     }
 
     @Override
@@ -48,8 +45,10 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public String addContact(Contact contact) {
-        return null;
+    public String addContact(ContactRequestDto from) {
+        Contact contact = dtoConverter.contactReqToEntity(from);
+        contactRepository.save(contact);
+        return "Successfully added";
     }
 
     @Override
