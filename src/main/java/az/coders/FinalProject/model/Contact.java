@@ -4,9 +4,6 @@ import az.coders.FinalProject.enums.PeopleGroup;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.annotations.ColumnDefault;
-
-import java.util.Set;
 
 @Entity
 @Data
@@ -17,6 +14,7 @@ import java.util.Set;
 public class Contact {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+            String id;
     String firstName;
     String lastName;
     String email;

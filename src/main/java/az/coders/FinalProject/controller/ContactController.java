@@ -41,5 +41,11 @@ public class ContactController {
                 ResponseEntity<>(contactService.addContact(contact), HttpStatus.OK);
     }
 
+    @PutMapping
+    public ResponseEntity<String>editContact(@RequestBody ContactRequestDto contact){
+       return new
+               ResponseEntity<>(contactService.editContact(contact),HttpStatus.OK);
+    }
+
 
 }

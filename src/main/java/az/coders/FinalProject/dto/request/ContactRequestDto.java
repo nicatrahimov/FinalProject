@@ -12,11 +12,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ContactRequestDto {
-    @NotBlank
+
+    String id;
     String firstName;
-    @NotBlank
     String lastName;
-    @NotBlank
     String email;
     String address;
     String city;
