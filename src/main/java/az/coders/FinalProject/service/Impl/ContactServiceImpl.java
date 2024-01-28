@@ -1,9 +1,7 @@
 package az.coders.FinalProject.service.Impl;
 
-import az.coders.FinalProject.dto.converter.CompanyDtoConverter;
 import az.coders.FinalProject.dto.converter.ContactDtoConverter;
 import az.coders.FinalProject.dto.request.ContactRequestDto;
-import az.coders.FinalProject.dto.response.CompanyResponseDto;
 import az.coders.FinalProject.dto.response.ContactResponseDto;
 import az.coders.FinalProject.enums.PeopleGroup;
 import az.coders.FinalProject.exception.ContactNotFound;
@@ -15,7 +13,6 @@ import az.coders.FinalProject.service.ContactService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +23,6 @@ public class ContactServiceImpl implements ContactService {
     private final ContactRepository contactRepository;
     private final ContactDtoConverter contactDtoConverter;
     private final CompanyService companyService;
-    private final CompanyDtoConverter companyDtoConverter;
 
     @Override
     public List<ContactResponseDto> getAllContact() {
@@ -81,6 +77,10 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     public String deleteContactById(String id) {
-        return null;
+        if (id!=null){
+            Contact contact = contactRepository.findById(id).orElseThrow(ContactNotFound::new);
+            contactRepository.delete(contact);
+            return "Deleted successfully";
+        }else return "Insert id please";
     }
 }

@@ -74,11 +74,7 @@ public class ContactDtoConverter {
         }else {
             return null;
         }
-
-
     }
-
-
     private ContactCompanyDto contactCompanyDto(Company company) {
         if (company != null) {
             return ContactCompanyDto.builder()

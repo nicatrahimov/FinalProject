@@ -33,15 +33,10 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CompanyResponseDto getCompanyById(String id) {
-        try {
+        if (id!=null){
             Company company = repository.findById(id).orElseThrow(CompanyNotFound::new);
             return companyDtoConverter.toResponseDto(company);
-        }catch (CompanyNotFound ex){
-
-            // TODO:
-            throw new RuntimeException();
-        }
-
+        }else return new CompanyResponseDto();
     }
 
     @Override
@@ -61,6 +56,8 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public String addCompany(CompanyRequestDto requestDto) {
-        return null;
+
+
+
     }
 }

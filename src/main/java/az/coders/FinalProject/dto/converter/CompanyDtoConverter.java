@@ -1,10 +1,17 @@
 package az.coders.FinalProject.dto.converter;
 
+import az.coders.FinalProject.dto.request.CompanyRequestDto;
 import az.coders.FinalProject.dto.response.CompanyContactDto;
 import az.coders.FinalProject.dto.response.CompanyResponseDto;
 import az.coders.FinalProject.enums.PeopleGroup;
+import az.coders.FinalProject.exception.ContactNotFound;
+import az.coders.FinalProject.exception.ImageNotFound;
 import az.coders.FinalProject.model.Company;
 import az.coders.FinalProject.model.Contact;
+import az.coders.FinalProject.model.Image;
+import az.coders.FinalProject.repository.CompanyRepository;
+import az.coders.FinalProject.repository.ContactRepository;
+import az.coders.FinalProject.repository.ImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +22,9 @@ import java.util.stream.Collectors;
 public class CompanyDtoConverter {
 
     private final ImageDtoConverter imageDtoConverter;
+    private final ContactRepository contactRepository;
+    private final ImageRepository imageRepository;
+
 
     public CompanyResponseDto toResponseDto(Company company) {
         return CompanyResponseDto.builder()
@@ -31,24 +41,54 @@ public class CompanyDtoConverter {
                 .build();
     }
 
-//    public Contact toEntityFromResponse(CompanyResponseDto responseDto) {
-//        if (responseDto != null && responseDto.getId() != null) {
-//            return Company.builder()
-//                    .id(responseDto.getId())
-//                    .email(responseDto.getEmail())
-//                    .city(responseDto.getCity())
-//                    .name(responseDto.getName())
-//                    .address(responseDto.getAddress())
-//                    .image(imageDtoConverter.toImage(responseDto.getImage()))
-//                    .description(responseDto.getDescription())
-//                    .faxNumber(responseDto.getFaxNumber())
-//                    .phoneNumber(responseDto.getPhoneNumber())
-//                    .contacts()
-//                    .build();
-//
-//        }
-//
-//    }
+
+    public Company toEntity(CompanyRequestDto dto) {
+
+        Company.builder()
+                .name(dto.getName())
+                .email(dto.getEmail())
+                .faxNumber(dto.getFaxNumber())
+                .website(dto.getWebsite())
+                .description(dto.getDescription())
+                .address(dto.getAddress())
+                .phoneNumber(dto.getPhoneNumber())
+                .city(dto.getCity())
+
+                .image(
+                        Image.builder()
+                                .base64(dto.getImage().getBase64())
+                                .build()
+                )
+                .contacts(
+                        dto.getContacts().stream().map(c ->
+                            toEntityFromCompanyContactDto(c);
+                        )
+                )
+                .build();
+
+    }
+
+
+    private Contact toEntityFromCompanyContactDto(CompanyContactDto dto) {
+
+        if (dto!=null){
+            Image image = imageRepository.findById(dto.getImage().getId()).orElseThrow(ImageNotFound::new);
+
+            Contact contact = contactRepository.findById(dto.getId()).orElseThrow(ContactNotFound::new);
+            contact.setFirstName(dto.getFirstName());
+            contact.setLastName(dto.getLastName());
+            contact.setCountry(dto.getCountry());
+            contact.setCity(dto.getCity());
+            contact.setEmail(dto.getEmail());
+            contact.setPeopleGroup(PeopleGroup.valueOf(dto.getPeopleGroup()));
+            contact.setAddress(dto.getAddress());
+            contact.setImage(image);
+            return contact;
+
+        }else return null;
+
+    }
+
 
     private CompanyContactDto toCompanyContactDto(Contact c) {
         CompanyContactDto dto = new CompanyContactDto();
@@ -65,6 +105,5 @@ public class CompanyDtoConverter {
         }
         return dto;
     }
-
 
 }
