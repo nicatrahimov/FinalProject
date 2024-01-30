@@ -60,10 +60,7 @@ public class CompanyDtoConverter {
                                 .build()
                 )
                 .contacts(
-                        dto.getContacts().stream().map(c ->
-                            toEntityFromCompanyContactDto(c);
-                        )
-                )
+                        dto.getContacts().stream().map(this::toEntityFromCompanyContactDto).collect(Collectors.toSet()))
                 .build();
 
     }

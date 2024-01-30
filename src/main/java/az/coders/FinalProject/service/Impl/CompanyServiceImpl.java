@@ -56,8 +56,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public String addCompany(CompanyRequestDto requestDto) {
-
-
-
+        Company company = companyDtoConverter.toEntity(requestDto);
+        return "Successfully added:" + company.getId();
     }
 }

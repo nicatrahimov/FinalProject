@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/company")
 @RequiredArgsConstructor
@@ -16,9 +18,10 @@ public class CompanyController {
     public CompanyService companyService;
 
     @GetMapping
-    public CompanyResponseDto getAllCompanies(){
-        companyService.getAllCompanies();
+    public List<CompanyResponseDto> getAllCompanies(){
+       return companyService.getAllCompanies();
     }
+
 
 
 
