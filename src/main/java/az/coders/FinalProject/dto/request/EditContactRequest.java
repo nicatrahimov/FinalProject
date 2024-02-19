@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class EditContactRequest {
-    String companyId;
-    String contactId;
+   private String companyId;
+   private String contactId;
 }

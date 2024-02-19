@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.validator.constraints.UniqueElements;
 
 @Entity
 @Data
@@ -20,19 +21,23 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
+    @NotBlank(message = "First name cannot be empty")
     String firstName;
+    @NotBlank(message = "Last name cannot be empty")
     String lastName;
+    @NotBlank(message = "Phone number cannot be empty")
     String phoneNumber;
+    @NotBlank(message = "Address cannot be empty")
     String address;
 
-    @NotBlank
+    @NotBlank(message = "Username cannot be empty")
     String username;
 
-    @NotBlank
+    @NotBlank(message = "Password cannot be empty")
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$", message = "Password must meet the criteria")
     String password;
 
-    @NotBlank
+    @NotBlank(message = "Email cannot be empty")
     @Email
     String email;
 }

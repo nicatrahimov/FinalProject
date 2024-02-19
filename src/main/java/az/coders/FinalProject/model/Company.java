@@ -33,7 +33,7 @@ public class Company {
     @JoinColumn(name = "image_id" ,referencedColumnName = "id")
     Image image;
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "company",orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "company")
     List<Contact> contacts =new ArrayList<>();
 
 
