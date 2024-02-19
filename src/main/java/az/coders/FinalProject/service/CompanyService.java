@@ -1,6 +1,7 @@
 package az.coders.FinalProject.service;
 
 import az.coders.FinalProject.dto.request.CompanyRequestDto;
+import az.coders.FinalProject.dto.request.EditContactRequest;
 import az.coders.FinalProject.dto.response.CompanyResponseDto;
 import az.coders.FinalProject.model.Company;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,11 @@ public interface CompanyService {
 
     String editCompany(CompanyRequestDto requestDto);
 
-    String deleteCompany(CompanyRequestDto requestDto);
+    String deleteCompany(String id);
 
     String addCompany(CompanyRequestDto requestDto);
+
+    String addContactToCompany(EditContactRequest request);
+
+    String removeContactFromCompany(EditContactRequest request);
 }

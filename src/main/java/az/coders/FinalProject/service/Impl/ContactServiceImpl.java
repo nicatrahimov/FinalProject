@@ -4,6 +4,7 @@ import az.coders.FinalProject.dto.converter.ContactDtoConverter;
 import az.coders.FinalProject.dto.request.ContactRequestDto;
 import az.coders.FinalProject.dto.response.ContactResponseDto;
 import az.coders.FinalProject.enums.PeopleGroup;
+import az.coders.FinalProject.exception.BadPeopleGroupName;
 import az.coders.FinalProject.exception.ContactNotFound;
 import az.coders.FinalProject.model.Contact;
 import az.coders.FinalProject.model.Image;
@@ -39,48 +40,65 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     public ContactResponseDto getContactById(String id) {
-        Contact contact = contactRepository.findById(id).orElseThrow(ContactNotFound::new);
+        Contact contact = contactRepository.findById(id).orElseThrow(()->new ContactNotFound("Contact not found with id: "+id));
         return contactDtoConverter.toContactRespDto(contact);
     }
 
     @Override
     public String editContact(ContactRequestDto contactDto) {
         if (contactDto != null && contactDto.getId()!=null) {
-            Contact contact = contactRepository.findById(contactDto.getId()).orElseThrow(ContactNotFound::new);
-            contact.setFirstName(contactDto.getFirstName());
-            contact.setLastName(contactDto.getLastName());
-            contact.setCity(contactDto.getCity());
-            contact.setCountry(contactDto.getCountry());
-            contact.setAddress(contactDto.getAddress());
-            contact.setEmail(contactDto.getEmail());
-            contact.setPeopleGroup(PeopleGroup.valueOf(contactDto.getPeopleGroup().toUpperCase()));
+            Contact contact = contactRepository.findById(contactDto.getId()).orElseThrow(()->new ContactNotFound("Contact not found with id: "+contactDto.getId()));
+            if (contactDto.getFirstName()!=null) {
+                contact.setFirstName(contactDto.getFirstName());
+            }
+            if (contactDto.getLastName()!=null){
+                contact.setLastName(contactDto.getLastName());
+            }
+            if (contactDto.getCity()!=null){
+                contact.setCity(contactDto.getCity());
+            }
+            if (contactDto.getCountry()!=null){
+                contact.setCountry(contactDto.getCountry());
+            }
+            if (contactDto.getAddress()!=null){
+                contact.setAddress(contactDto.getAddress());
+            }
+            if (contactDto.getEmail()!=null){
+                contact.setEmail(contactDto.getEmail());
+            }
+            if (contactDto.getPeopleGroup()!=null){
+                contact.setPeopleGroup(PeopleGroup.valueOf(contactDto.getPeopleGroup().toUpperCase()));
+            }else throw new  BadPeopleGroupName("Choose any People group please! People Group field is null!");
             contact.setImage(
                     Image.builder()
                     .base64(contactDto.getImage().getBase64())
                     .build());
-            if (contactDto.getCompanyId()!=null){
+            if (contactDto.getCompanyId()!=null && contact.getPeopleGroup()==PeopleGroup.EMPLOYER){
                 contact.setCompany(companyService.getCompanyEntityById(contactDto.getCompanyId()));
             }
             contactRepository.save(contact);
             return "Successfully edited";
-        }else return "Unsuccessfully";
+        }else throw new NullPointerException("Object or Id is cannot be null");
     }
 
 
 
     @Override
     public String addContact(ContactRequestDto from) {
-        Contact contact = contactDtoConverter.contactReqToEntity(from);
-        contactRepository.save(contact);
-        return "Successfully added";
+        if (from.getPeopleGroup().equalsIgnoreCase("CLIENT") ||
+                from.getPeopleGroup().equalsIgnoreCase("EMPLOYER")){
+            Contact contact = contactDtoConverter.contactReqToEntity(from);
+            contactRepository.save(contact);
+            return "Successfully added, id: " + contact.getId();
+        }else throw new BadPeopleGroupName("Bad people group name");
     }
 
     @Override
     public String deleteContactById(String id) {
         if (id!=null){
-            Contact contact = contactRepository.findById(id).orElseThrow(ContactNotFound::new);
+            Contact contact = contactRepository.findById(id).orElseThrow(()->new ContactNotFound("Contact not found with id: "+id));
             contactRepository.delete(contact);
             return "Deleted successfully";
-        }else return "Insert id please";
+        }else throw new  NullPointerException("Insert id please!");
     }
 }

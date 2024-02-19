@@ -9,7 +9,6 @@ import az.coders.FinalProject.exception.ImageNotFound;
 import az.coders.FinalProject.model.Company;
 import az.coders.FinalProject.model.Contact;
 import az.coders.FinalProject.model.Image;
-import az.coders.FinalProject.repository.CompanyRepository;
 import az.coders.FinalProject.repository.ContactRepository;
 import az.coders.FinalProject.repository.ImageRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,24 +26,27 @@ public class CompanyDtoConverter {
 
 
     public CompanyResponseDto toResponseDto(Company company) {
-        return CompanyResponseDto.builder()
+        CompanyResponseDto companyResponse = CompanyResponseDto.builder()
                 .id(company.getId())
                 .email(company.getEmail())
                 .city(company.getCity())
                 .name(company.getName())
                 .address(company.getAddress())
-                .image(imageDtoConverter.toImageResponseDto(company.getImage()))
                 .description(company.getDescription())
                 .faxNumber(company.getFaxNumber())
                 .phoneNumber(company.getPhoneNumber())
                 .contacts(company.getContacts().stream().map(this::toCompanyContactDto).collect(Collectors.toSet()))
                 .build();
+        if (company.getImage() != null) {
+            companyResponse.setImage(imageDtoConverter.toImageResponseDto(company.getImage()));
+        }
+        return companyResponse;
     }
 
 
     public Company toEntity(CompanyRequestDto dto) {
 
-        Company.builder()
+        Company company = Company.builder()
                 .name(dto.getName())
                 .email(dto.getEmail())
                 .faxNumber(dto.getFaxNumber())
@@ -53,25 +55,27 @@ public class CompanyDtoConverter {
                 .address(dto.getAddress())
                 .phoneNumber(dto.getPhoneNumber())
                 .city(dto.getCity())
-
-                .image(
-                        Image.builder()
-                                .base64(dto.getImage().getBase64())
-                                .build()
-                )
-                .contacts(
-                        dto.getContacts().stream().map(this::toEntityFromCompanyContactDto).collect(Collectors.toSet()))
                 .build();
 
+
+        if (dto.getImage() != null && dto.getImage().getBase64() != null) {
+            Image image = new Image();
+            image.setBase64(dto.getImage().getBase64());
+            company.setImage(image);
+        }
+        if (dto.getContacts() != null) {
+            company.getContacts().addAll(dto.getContacts().stream().map(this::toEntityFromCompanyContactDto).collect(Collectors.toSet()));
+        }
+        return company;
     }
 
 
     private Contact toEntityFromCompanyContactDto(CompanyContactDto dto) {
 
-        if (dto!=null){
-            Image image = imageRepository.findById(dto.getImage().getId()).orElseThrow(ImageNotFound::new);
+        if (dto != null && dto.getId() != null) {
+            Image image = imageRepository.findById(dto.getImage().getId()).orElseThrow(() -> new ImageNotFound("Image not found with id: " + dto.getImage().getId()));
 
-            Contact contact = contactRepository.findById(dto.getId()).orElseThrow(ContactNotFound::new);
+            Contact contact = contactRepository.findById(dto.getId()).orElseThrow(() -> new ContactNotFound("Contact not found with id: " + dto.getId()));
             contact.setFirstName(dto.getFirstName());
             contact.setLastName(dto.getLastName());
             contact.setCountry(dto.getCountry());
@@ -82,7 +86,7 @@ public class CompanyDtoConverter {
             contact.setImage(image);
             return contact;
 
-        }else return null;
+        } else throw new NullPointerException("Contact can not be null");
 
     }
 

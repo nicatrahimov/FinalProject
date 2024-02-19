@@ -2,7 +2,6 @@ package az.coders.FinalProject.controller;
 
 import az.coders.FinalProject.dto.request.ContactRequestDto;
 import az.coders.FinalProject.dto.response.ContactResponseDto;
-import az.coders.FinalProject.model.Contact;
 import az.coders.FinalProject.service.ContactService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/contact")
+@RequestMapping("/api/contact")
 @RequiredArgsConstructor
 public class ContactController {
 
@@ -36,7 +35,6 @@ public class ContactController {
 
     @PostMapping
     public ResponseEntity<String> addContact(@RequestBody ContactRequestDto contact) {
-
         return new
                 ResponseEntity<>(contactService.addContact(contact), HttpStatus.OK);
     }
@@ -50,6 +48,4 @@ public class ContactController {
     public ResponseEntity<String>deleteContactById(@PathVariable String id){
        return new ResponseEntity<>(contactService.deleteContactById(id),HttpStatus.OK);
     }
-
-
 }
