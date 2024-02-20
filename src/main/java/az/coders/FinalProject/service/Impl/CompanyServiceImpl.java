@@ -88,12 +88,13 @@ public class CompanyServiceImpl implements CompanyService {
             }else throw new  NullPointerException("Id can not be null");
         }
 
-        @Override public String addCompany (CompanyRequestDto requestDto){
-            if (requestDto.getId() != null) {
+        @Override
+        public String addCompany (CompanyRequestDto requestDto){
+            if (requestDto!= null) {
                 Company company = companyDtoConverter.toEntity(requestDto);
                 repository.save(company);
                 return "Successfully added:" + company.getId();
-            } else throw new NullPointerException("Id can not be null");
+            } else throw new NullPointerException("Object can not be null");
 
         }
 

@@ -1,5 +1,6 @@
 package az.coders.FinalProject.exception;
 
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -28,5 +29,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {ImageNotFound.class})
     public ResponseEntity<String>imageNotFound(ImageNotFound imageNotFound){
         return new ResponseEntity<>(imageNotFound.getMessage(),HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(value = {Base64FormatIsNotValid.class})
+    public ResponseEntity<String>base64IsNotValid(Base64FormatIsNotValid base64FormatIsNotValid){
+        return new ResponseEntity<>(base64FormatIsNotValid.getMessage(),HttpStatus.BAD_REQUEST);
     }
 }
