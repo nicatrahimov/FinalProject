@@ -5,6 +5,7 @@ import az.coders.FinalProject.dto.response.TaskResponseDto;
 import az.coders.FinalProject.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,6 +40,9 @@ public class TaskController {
 
     @PutMapping
     public ResponseEntity<String> editTask(@RequestBody TaskRequestDto task) {
-        return null;
+       return new ResponseEntity<>(taskService.editTask(task), HttpStatusCode.valueOf(200));
     }
+
+
+
 }

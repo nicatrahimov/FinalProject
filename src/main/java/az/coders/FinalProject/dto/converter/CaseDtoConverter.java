@@ -1,6 +1,6 @@
 package az.coders.FinalProject.dto.converter;
 
-import az.coders.FinalProject.dto.response.CaseResponseDto;
+import az.coders.FinalProject.dto.response.TaskCaseDto;
 import az.coders.FinalProject.model.Case;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -12,8 +12,8 @@ public class CaseDtoConverter {
     private final ImageDtoConverter imageDtoConverter;
     private final PracticeAreaDtoConverter practiceAreaDtoConverter;
 
-    public CaseResponseDto toResponseDTO(Case caseEntity) {
-        return CaseResponseDto.builder()
+    public TaskCaseDto toResponseDTO(Case caseEntity) {
+        return TaskCaseDto.builder()
                 .id(caseEntity.getId())
                 .name(caseEntity.getName())
                 .phoneNumber(caseEntity.getPhoneNumber())
@@ -23,9 +23,8 @@ public class CaseDtoConverter {
                 .office(caseEntity.getOffice().toString())
                 .caseStage(caseEntity.getCaseStage().toString())
                 .image(imageDtoConverter.toImageResponseDto(caseEntity.getImage()))
-//                .practiceArea(practiceAreaDtoConverter.toResponseEntity(caseEntity.getPracticeArea()))
+                .practiceArea(practiceAreaDtoConverter.toResponseEntity(caseEntity.getPracticeArea()))
                 .build();
-
         // TODO
     }
 }

@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -15,10 +15,10 @@ import java.time.LocalDate;
 public class TaskResponseDto {
     String id;
     String name;
-    @JsonFormat(pattern = "dd-MM-yyyy", timezone = "Asia/Baku")
-    LocalDate dueDate;
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm")
+    LocalDateTime dueDate;
     String description;
     String priority;
     ReminderResponseDto reminder;
-    CaseResponseDto caseDto;
+    TaskCaseDto caseDto;
 }

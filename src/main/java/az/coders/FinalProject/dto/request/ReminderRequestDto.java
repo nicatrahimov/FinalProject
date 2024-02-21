@@ -15,4 +15,7 @@ public class ReminderRequestDto {
    @Pattern(regexp = "MINUTE|HOUR|DAY", message = "Time type should be MINUTE, HOUR or DAY")
    @NotNull(message = "Time type cannot be null")
    private String timeType;
+
+
+   //ALert Popup Email
 }

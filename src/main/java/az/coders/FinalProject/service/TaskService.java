@@ -15,4 +15,6 @@ public interface TaskService {
     String addTask(TaskRequestDto task);
 
     String deleteTask(String id);
+
+    String editTask(TaskRequestDto task);
 }

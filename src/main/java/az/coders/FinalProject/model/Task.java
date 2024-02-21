@@ -1,13 +1,16 @@
 package az.coders.FinalProject.model;
 
 import az.coders.FinalProject.enums.Priority;
+import az.coders.FinalProject.util.LocalDateTimeWithoutSecondsSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -21,12 +24,12 @@ public class Task {
     String id;
     String name;
 
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm")
     @JsonIgnore
-    final LocalDate createdAt = LocalDate.now();
+    final LocalDateTime createdAt = LocalDateTime.now();
 
-    @JsonFormat(pattern = "dd-MM-yyyy")
-    LocalDate dueDate;
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm")
+    LocalDateTime dueDate;
 
     String description;
 
@@ -37,7 +40,7 @@ public class Task {
     @JoinColumn(name = "reminder_id", referencedColumnName = "id")
     Reminder reminder;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="case_id",referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "case_id", referencedColumnName = "id")
     Case aCase;
 }

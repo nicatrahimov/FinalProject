@@ -9,6 +9,9 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -44,4 +47,7 @@ public class Case {
     @OneToOne
     @JoinColumn(name = "practiceArea_id", referencedColumnName = "id")
     PracticeArea practiceArea;
+
+    @OneToMany(mappedBy = "aCase", cascade = CascadeType.ALL, orphanRemoval = true)
+    Set<Task> taskList = new HashSet<>();
 }

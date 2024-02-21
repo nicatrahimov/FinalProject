@@ -7,13 +7,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CaseResponseDto {
+public class TaskCaseDto {
     String id;
     String name;
     String phoneNumber;
@@ -25,5 +23,4 @@ public class CaseResponseDto {
     String caseStage;
     ImageResponseDto image;
     PracticeAreaResponseDto practiceArea;
-    List<CaseTaskDto> taskList;
 }

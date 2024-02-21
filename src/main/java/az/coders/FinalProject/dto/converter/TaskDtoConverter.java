@@ -3,6 +3,7 @@ package az.coders.FinalProject.dto.converter;
 import az.coders.FinalProject.dto.request.TaskRequestDto;
 import az.coders.FinalProject.dto.response.TaskResponseDto;
 import az.coders.FinalProject.enums.Priority;
+import az.coders.FinalProject.exception.CaseNotFoundException;
 import az.coders.FinalProject.model.Case;
 import az.coders.FinalProject.model.Task;
 import az.coders.FinalProject.repository.CaseRepository;
@@ -29,7 +30,7 @@ public class TaskDtoConverter {
     }
 
     public Task convertToEntity(TaskRequestDto task) {
-        Case aCase = caseRepository.findById(task.getCaseId()).orElseThrow(() -> new RuntimeException("Case not found with id: " + task.getCaseId()));
+        Case aCase = caseRepository.findById(task.getCaseId()).orElseThrow(() -> new CaseNotFoundException("Case not found with id: " + task.getCaseId()));
         return Task.builder()
                 .description(task.getDescription())
                 .name(task.getName())
