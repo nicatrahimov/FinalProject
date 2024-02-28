@@ -11,7 +11,7 @@ public class PracticeAreaDtoConverter {
 
     private final ImageDtoConverter imageDtoConverter;
 
-    public PracticeAreaResponseDto toResponseEntity(PracticeArea practiceArea){
+    public PracticeAreaResponseDto toResponseDto(PracticeArea practiceArea){
         return PracticeAreaResponseDto.builder()
                 .id(practiceArea.getId())
                 .name(practiceArea.getName())
@@ -20,4 +20,5 @@ public class PracticeAreaDtoConverter {
                 .image(imageDtoConverter.toImageResponseDto(practiceArea.getImage()))
                 .build();
     }
+
 }

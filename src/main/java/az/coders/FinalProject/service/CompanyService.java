@@ -21,8 +21,4 @@ public interface CompanyService {
     String deleteCompany(String id);
 
     String addCompany(CompanyRequestDto requestDto);
-
-    String addContactToCompany(EditContactRequest request);
-
-    String removeContactFromCompany(EditContactRequest request);
 }

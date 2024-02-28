@@ -31,7 +31,6 @@ public class ContactDtoConverter {
                     .country(contact.getCountry())
                     .peopleGroup(contact.getPeopleGroup().toString())
                     .image(imageDtoConverter.toImageResponseDto(contact.getImage()))
-                    .company(contactCompanyDto(contact.getCompany()))
                     .build();
         }else return new ContactResponseDto();
     }
@@ -64,12 +63,7 @@ public class ContactDtoConverter {
                             .base64(contactDto.getImage().getBase64())
                             .build())
                     .build();
-            if (contactDto.getPeopleGroup().equalsIgnoreCase("employer")){
-                if (contactDto.getCompanyId()==null){
-                    throw new NullPointerException("Employers must have a company");
-                }
-                contact.setCompany(companyRepository.findById(contactDto.getCompanyId()).orElseThrow(()->new CompanyNotFound("Company not found, try it with another id. Wrong id: "+contactDto.getCompanyId())));
-            }
+
                 return contact;
         }else {
             throw new NullPointerException("ContactDto is null");

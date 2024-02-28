@@ -73,9 +73,6 @@ public class ContactServiceImpl implements ContactService {
                     Image.builder()
                     .base64(contactDto.getImage().getBase64())
                     .build());
-            if (contactDto.getCompanyId()!=null && contact.getPeopleGroup()==PeopleGroup.EMPLOYER){
-                contact.setCompany(companyService.getCompanyEntityById(contactDto.getCompanyId()));
-            }
             contactRepository.save(contact);
             return "Successfully edited";
         }else throw new NullPointerException("Object or Id is cannot be null");

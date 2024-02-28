@@ -35,7 +35,6 @@ public class CompanyDtoConverter {
                 .description(company.getDescription())
                 .faxNumber(company.getFaxNumber())
                 .phoneNumber(company.getPhoneNumber())
-                .contacts(company.getContacts().stream().map(this::toCompanyContactDto).collect(Collectors.toSet()))
                 .build();
         if (company.getImage() != null) {
             companyResponse.setImage(imageDtoConverter.toImageResponseDto(company.getImage()));
@@ -63,32 +62,29 @@ public class CompanyDtoConverter {
             image.setBase64(dto.getImage().getBase64());
             company.setImage(image);
         }
-        if (dto.getContacts() != null) {
-            company.getContacts().addAll(dto.getContacts().stream().map(this::toEntityFromCompanyContactDto).collect(Collectors.toSet()));
-        }
         return company;
     }
 
 
-    private Contact toEntityFromCompanyContactDto(CompanyContactDto dto) {
-
-        if (dto != null && dto.getId() != null) {
-            Image image = imageRepository.findById(dto.getImage().getId()).orElseThrow(() -> new ImageNotFound("Image not found with id: " + dto.getImage().getId()));
-
-            Contact contact = contactRepository.findById(dto.getId()).orElseThrow(() -> new ContactNotFound("Contact not found with id: " + dto.getId()));
-            contact.setFirstName(dto.getFirstName());
-            contact.setLastName(dto.getLastName());
-            contact.setCountry(dto.getCountry());
-            contact.setCity(dto.getCity());
-            contact.setEmail(dto.getEmail());
-            contact.setPeopleGroup(PeopleGroup.valueOf(dto.getPeopleGroup()));
-            contact.setAddress(dto.getAddress());
-            contact.setImage(image);
-            return contact;
-
-        } else throw new NullPointerException("Contact can not be null");
-
-    }
+//    private Contact toEntityFromCompanyContactDto(CompanyContactDto dto) {
+//
+//        if (dto != null && dto.getId() != null) {
+//            Image image = imageRepository.findById(dto.getImage().getId()).orElseThrow(() -> new ImageNotFound("Image not found with id: " + dto.getImage().getId()));
+//
+//            Contact contact = contactRepository.findById(dto.getId()).orElseThrow(() -> new ContactNotFound("Contact not found with id: " + dto.getId()));
+//            contact.setFirstName(dto.getFirstName());
+//            contact.setLastName(dto.getLastName());
+//            contact.setCountry(dto.getCountry());
+//            contact.setCity(dto.getCity());
+//            contact.setEmail(dto.getEmail());
+//            contact.setPeopleGroup(PeopleGroup.valueOf(dto.getPeopleGroup()));
+//            contact.setAddress(dto.getAddress());
+//            contact.setImage(image);
+//            return contact;
+//
+//        } else throw new NullPointerException("Contact can not be null");
+//
+//    }
 
 
     private CompanyContactDto toCompanyContactDto(Contact c) {

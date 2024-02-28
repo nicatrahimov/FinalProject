@@ -33,17 +33,7 @@ public class Company {
     @JoinColumn(name = "image_id" ,referencedColumnName = "id")
     Image image;
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "company")
-    List<Contact> contacts =new ArrayList<>();
-
-
-    public void addContact(Contact contact) {
-        contacts.add(contact);
-        contact.setCompany(this);
-    }
-
-    public void removeContact(Contact contact) {
-        contacts.remove(contact);
-        contact.setCompany(null);
-    }
+    @OneToOne
+    @JoinColumn(name = "case_id",referencedColumnName = "id")
+    Case aCase;
 }

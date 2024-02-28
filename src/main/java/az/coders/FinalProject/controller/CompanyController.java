@@ -46,16 +46,4 @@ public class CompanyController {
         return new
                 ResponseEntity<>(companyService.deleteCompany(id),HttpStatus.OK);
     }
-
-    @PutMapping("/addContact")
-    public ResponseEntity<String>addContactToCompany(@RequestBody EditContactRequest request){
-        return new
-                ResponseEntity<>(companyService.addContactToCompany(request),HttpStatus.OK);
-    }
-    @PutMapping("/removeContact")
-    public ResponseEntity<String>removeContactFromCompany(@RequestBody EditContactRequest request){
-        return new
-                ResponseEntity<>(companyService.removeContactFromCompany(request),HttpStatus.OK);
-    }
-
 }

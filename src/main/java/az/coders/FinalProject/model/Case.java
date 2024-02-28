@@ -4,6 +4,7 @@ package az.coders.FinalProject.model;
 import az.coders.FinalProject.enums.CaseStage;
 import az.coders.FinalProject.enums.Office;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -31,7 +32,7 @@ public class Case {
     String caseNumber;
     String description;
     @JsonFormat(pattern = "dd-MM-yyyy")
-    final LocalDate createdAt=LocalDate.now();
+    final LocalDate createdAt = LocalDate.now();
     @JsonFormat(pattern = "dd-MM-yyyy")
     LocalDate dueDate;
 
@@ -44,10 +45,17 @@ public class Case {
     @JoinColumn(name = "image_id", referencedColumnName = "id")
     Image image;
 
-    @OneToOne
-    @JoinColumn(name = "practiceArea_id", referencedColumnName = "id")
+
+    @ManyToOne
+    @JoinColumn(name = "practice_area_id")
     PracticeArea practiceArea;
 
-    @OneToMany(mappedBy = "aCase", cascade = CascadeType.ALL, orphanRemoval = true)
-    Set<Task> taskList = new HashSet<>();
+    @OneToMany(mappedBy = "aCase", fetch = FetchType.LAZY)
+    List<Task> taskList;
+
+
+    @OneToOne(mappedBy = "aCase", fetch = FetchType.LAZY)
+    @JsonIgnore
+    Company company;
+
 }

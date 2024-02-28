@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 @Builder
@@ -27,5 +30,8 @@ public class PracticeArea {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id", referencedColumnName = "id")
     Image image;
+
+    @OneToMany(mappedBy = "practiceArea")
+    List<Case> cases = new ArrayList<>();
 
 }

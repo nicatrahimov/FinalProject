@@ -34,4 +34,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String>base64IsNotValid(Base64FormatIsNotValid base64FormatIsNotValid){
         return new ResponseEntity<>(base64FormatIsNotValid.getMessage(),HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(value = {PracticeAreaNotFound.class})
+    public ResponseEntity<String>practiceAreaNotFound(PracticeAreaNotFound practiceAreaNotFound){
+        return new ResponseEntity<>(practiceAreaNotFound.getMessage(),HttpStatus.NOT_FOUND);
+    }
 }

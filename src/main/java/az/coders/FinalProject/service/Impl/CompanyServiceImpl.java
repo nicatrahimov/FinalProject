@@ -97,22 +97,4 @@ public class CompanyServiceImpl implements CompanyService {
             } else throw new NullPointerException("Object can not be null");
 
         }
-
-    @Override
-    public String addContactToCompany(EditContactRequest request) {
-        Company company = repository.findById(request.getCompanyId()).orElseThrow(() -> new CompanyNotFound("Company not found with id: " + request.getCompanyId()));
-        Contact contact = contactRepository.findById(request.getContactId()).orElseThrow(() -> new ContactNotFound("Contact not found with id: " + request.getContactId()));
-        company.addContact(contact);
-        repository.save(company);
-        return "Successfully added:" + contact.getId();
-    }
-
-    @Override
-    public String removeContactFromCompany(EditContactRequest request) {
-        Company company = repository.findById(request.getCompanyId()).orElseThrow(() -> new CompanyNotFound("Company not found with id: " + request.getCompanyId()));
-        Contact contact = contactRepository.findById(request.getContactId()).orElseThrow(() -> new ContactNotFound("Contact not found with id: " + request.getContactId()));
-        company.removeContact(contact);
-        repository.save(company);
-        return "Successfully removed:" + contact.getId();
-    }
 }

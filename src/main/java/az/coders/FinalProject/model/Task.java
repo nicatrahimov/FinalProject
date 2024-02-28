@@ -40,7 +40,7 @@ public class Task {
     @JoinColumn(name = "reminder_id", referencedColumnName = "id")
     Reminder reminder;
 
-    @ManyToOne
-    @JoinColumn(name = "case_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "case_id")
     Case aCase;
 }

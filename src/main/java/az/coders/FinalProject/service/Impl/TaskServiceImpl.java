@@ -44,7 +44,12 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public String addTask(TaskRequestDto task) {
+        if (task.getCaseId()==null){
+            throw new NullPointerException("Case id can not be null");
+        }
+        Case aCase = caseRepository.findById(task.getCaseId()).orElseThrow(() -> new RuntimeException("Case not found with id: " + task.getCaseId()));
         Task task1 = taskDtoConverter.convertToEntity(task);
+        task1.setACase(aCase);
         taskRepository.save(task1);
         return "Successfully added:" + task1.getId();
     }

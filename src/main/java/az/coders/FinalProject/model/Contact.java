@@ -33,8 +33,4 @@ public class Contact {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id" ,referencedColumnName = "id")
     Image image;
-
-    @ManyToOne
-    @JoinColumn(name = "company_id",referencedColumnName = "id")
-    Company company;
 }
