@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/email")
 @RequiredArgsConstructor
-public class EmailSender {
+public class EmailController {
 
     private final MailSenderService mailSenderService;
 
@@ -19,4 +19,5 @@ public class EmailSender {
         return new
                 ResponseEntity<>(mailSenderService.sendEmail(mailDto), HttpStatus.OK);
     }
+
 }

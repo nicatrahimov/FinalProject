@@ -1,5 +1,6 @@
 package az.coders.FinalProject.dto.response;
 
+import az.coders.FinalProject.model.Case;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,5 +23,5 @@ public class CompanyResponseDto {
     private String address;
     private String description;
     private ImageResponseDto image;
-    private Set<CompanyContactDto> contacts = new HashSet<>();
+    private CaseResponseDto aCase;
 }

@@ -26,5 +26,5 @@ public class CompanyRequestDto {
     String address;
     String description;
     ImageRequestDto image;
-    Set<CompanyContactDto> contacts;
+    String caseId;
 }

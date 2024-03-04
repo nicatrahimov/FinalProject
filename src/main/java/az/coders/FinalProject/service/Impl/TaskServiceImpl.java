@@ -5,6 +5,7 @@ import az.coders.FinalProject.dto.converter.TaskDtoConverter;
 import az.coders.FinalProject.dto.request.TaskRequestDto;
 import az.coders.FinalProject.dto.response.TaskResponseDto;
 import az.coders.FinalProject.enums.Priority;
+import az.coders.FinalProject.exception.CaseNotFoundException;
 import az.coders.FinalProject.exception.TaskNotFound;
 import az.coders.FinalProject.model.Case;
 import az.coders.FinalProject.model.Task;
@@ -47,7 +48,7 @@ public class TaskServiceImpl implements TaskService {
         if (task.getCaseId()==null){
             throw new NullPointerException("Case id can not be null");
         }
-        Case aCase = caseRepository.findById(task.getCaseId()).orElseThrow(() -> new RuntimeException("Case not found with id: " + task.getCaseId()));
+        Case aCase = caseRepository.findById(task.getCaseId()).orElseThrow(() -> new CaseNotFoundException("Case not found with id: " + task.getCaseId()));
         Task task1 = taskDtoConverter.convertToEntity(task);
         task1.setACase(aCase);
         taskRepository.save(task1);
@@ -72,7 +73,7 @@ public class TaskServiceImpl implements TaskService {
         }
         Task task =  taskRepository.findById(dto.getId()).orElseThrow(() -> new TaskNotFound("Task not found with id: " + dto.getId()));
         if (dto.getCaseId()!=null){
-            Case aCase = caseRepository.findById(dto.getCaseId()).orElseThrow(() -> new RuntimeException("Case not found with id: " + dto.getCaseId()));
+            Case aCase = caseRepository.findById(dto.getCaseId()).orElseThrow(() -> new CaseNotFoundException("Case not found with id: " + dto.getCaseId()));
             task.setACase(aCase);
         }
         if (dto.getPriority()!=null){

@@ -1,7 +1,10 @@
 package az.coders.FinalProject.dto.converter;
 
+import az.coders.FinalProject.dto.request.PracticeAreaRequestDto;
 import az.coders.FinalProject.dto.response.PracticeAreaResponseDto;
+import az.coders.FinalProject.exception.PracticeAreaNotFound;
 import az.coders.FinalProject.model.PracticeArea;
+import az.coders.FinalProject.repository.PracticeAreaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -10,15 +13,49 @@ import org.springframework.stereotype.Component;
 public class PracticeAreaDtoConverter {
 
     private final ImageDtoConverter imageDtoConverter;
+    private final PracticeAreaRepository practiceAreaRepository;
 
-    public PracticeAreaResponseDto toResponseDto(PracticeArea practiceArea){
-        return PracticeAreaResponseDto.builder()
+
+    public PracticeAreaResponseDto toResponseDto(PracticeArea practiceArea) {
+
+        PracticeAreaResponseDto build = PracticeAreaResponseDto.builder()
                 .id(practiceArea.getId())
                 .name(practiceArea.getName())
                 .city(practiceArea.getCity())
-                .isActiveCase(practiceArea.getIsActiveCase())
                 .image(imageDtoConverter.toImageResponseDto(practiceArea.getImage()))
                 .build();
+        if (practiceArea.getCases().isEmpty()) {
+            build.setIsActiveCase(false);
+        } else build.setIsActiveCase(true);
+        return build;
     }
 
+    public PracticeArea toEntity(PracticeAreaRequestDto practiceAreaRequestDto) {
+        if (practiceAreaRequestDto.getId() != null) {
+            PracticeArea practiceArea = practiceAreaRepository.findById(practiceAreaRequestDto.getId()).orElseThrow(() -> new PracticeAreaNotFound("Practice area not found"));
+            if (practiceArea.getName() != null) {
+                practiceArea.setName(practiceAreaRequestDto.getName());
+            }
+            if (practiceArea.getCity() != null) {
+                practiceArea.setCity(practiceAreaRequestDto.getCity());
+            }
+            if (practiceArea.getImage() != null) {
+                practiceArea.setImage(imageDtoConverter.toImage(practiceAreaRequestDto.getImage()));
+            }
+            return practiceArea;
+        } else {
+            return setter(practiceAreaRequestDto);
+        }
+
+    }
+
+    private PracticeArea setter(PracticeAreaRequestDto practiceAreaRequestDto) {
+
+        return PracticeArea.builder()
+                .name(practiceAreaRequestDto.getName())
+                .city(practiceAreaRequestDto.getCity())
+                .image(imageDtoConverter.toImage(practiceAreaRequestDto.getImage()))
+                .build();
+
+    }
 }

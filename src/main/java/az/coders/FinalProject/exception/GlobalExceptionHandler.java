@@ -39,4 +39,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String>practiceAreaNotFound(PracticeAreaNotFound practiceAreaNotFound){
         return new ResponseEntity<>(practiceAreaNotFound.getMessage(),HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(value = {TaskNotFound.class})
+    public ResponseEntity<String>taskNotFound(TaskNotFound taskNotFound) {
+        return new ResponseEntity<>(taskNotFound.getMessage(),HttpStatus.NOT_FOUND);
+    }
 }

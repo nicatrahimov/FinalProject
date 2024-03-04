@@ -4,11 +4,14 @@ import az.coders.FinalProject.dto.converter.CompanyDtoConverter;
 import az.coders.FinalProject.dto.request.CompanyRequestDto;
 import az.coders.FinalProject.dto.request.EditContactRequest;
 import az.coders.FinalProject.dto.response.CompanyResponseDto;
+import az.coders.FinalProject.exception.CaseNotFoundException;
 import az.coders.FinalProject.exception.CompanyNotFound;
 import az.coders.FinalProject.exception.ContactNotFound;
+import az.coders.FinalProject.model.Case;
 import az.coders.FinalProject.model.Company;
 import az.coders.FinalProject.model.Contact;
 import az.coders.FinalProject.model.Image;
+import az.coders.FinalProject.repository.CaseRepository;
 import az.coders.FinalProject.repository.CompanyRepository;
 import az.coders.FinalProject.repository.ContactRepository;
 import az.coders.FinalProject.service.CompanyService;
@@ -24,7 +27,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     private final CompanyRepository repository;
     private final CompanyDtoConverter companyDtoConverter;
-    private final ContactRepository contactRepository;
+    private final CaseRepository caseRepository;
 
     @Override
     public List<CompanyResponseDto> getAllCompanies() {
@@ -73,6 +76,9 @@ public class CompanyServiceImpl implements CompanyService {
                 company.setWebsite(requestDto.getWebsite());
             }if (requestDto.getImage() != null) {
                 company.setImage(Image.builder().base64(requestDto.getImage().getBase64()).build());
+            }if(requestDto.getCaseId()!=null){
+                Case aCase = caseRepository.findById(requestDto.getCaseId()).orElseThrow(() -> new CaseNotFoundException("Case not found with id: " + requestDto.getCaseId()));
+                company.setACase(aCase);
             }
             repository.save(company);
             return "Successfully edited:" + company.getId();
@@ -95,6 +101,5 @@ public class CompanyServiceImpl implements CompanyService {
                 repository.save(company);
                 return "Successfully added:" + company.getId();
             } else throw new NullPointerException("Object can not be null");
-
         }
 }

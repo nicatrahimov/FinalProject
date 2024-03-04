@@ -1,14 +1,18 @@
 package az.coders.FinalProject.dto.converter;
 
 import az.coders.FinalProject.dto.request.CompanyRequestDto;
+import az.coders.FinalProject.dto.response.CaseResponseDto;
 import az.coders.FinalProject.dto.response.CompanyContactDto;
 import az.coders.FinalProject.dto.response.CompanyResponseDto;
 import az.coders.FinalProject.enums.PeopleGroup;
+import az.coders.FinalProject.exception.CaseNotFoundException;
 import az.coders.FinalProject.exception.ContactNotFound;
 import az.coders.FinalProject.exception.ImageNotFound;
+import az.coders.FinalProject.model.Case;
 import az.coders.FinalProject.model.Company;
 import az.coders.FinalProject.model.Contact;
 import az.coders.FinalProject.model.Image;
+import az.coders.FinalProject.repository.CaseRepository;
 import az.coders.FinalProject.repository.ContactRepository;
 import az.coders.FinalProject.repository.ImageRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +25,8 @@ import java.util.stream.Collectors;
 public class CompanyDtoConverter {
 
     private final ImageDtoConverter imageDtoConverter;
-    private final ContactRepository contactRepository;
-    private final ImageRepository imageRepository;
+    private final CaseRepository caseRepository;
+    private final CaseDtoConverter caseDtoConverter;
 
 
     public CompanyResponseDto toResponseDto(Company company) {
@@ -35,9 +39,14 @@ public class CompanyDtoConverter {
                 .description(company.getDescription())
                 .faxNumber(company.getFaxNumber())
                 .phoneNumber(company.getPhoneNumber())
+                .website(company.getWebsite())
                 .build();
         if (company.getImage() != null) {
             companyResponse.setImage(imageDtoConverter.toImageResponseDto(company.getImage()));
+        }
+        if (company.getACase()!=null){
+            CaseResponseDto responseDto = caseDtoConverter.toResponseDto(company.getACase());
+            companyResponse.setACase(responseDto);
         }
         return companyResponse;
     }
@@ -55,6 +64,11 @@ public class CompanyDtoConverter {
                 .phoneNumber(dto.getPhoneNumber())
                 .city(dto.getCity())
                 .build();
+
+        if (dto.getCaseId() != null) {
+            Case aCase = caseRepository.findById(dto.getCaseId()).orElseThrow(() -> new CaseNotFoundException("Case not found with id: " + dto.getCaseId()));
+            company.setACase(aCase);
+        }
 
 
         if (dto.getImage() != null && dto.getImage().getBase64() != null) {

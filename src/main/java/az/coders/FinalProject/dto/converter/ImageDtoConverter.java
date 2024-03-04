@@ -35,8 +35,5 @@ public class ImageDtoConverter {
         }catch (NullPointerException e){
             return null;
         }
-
     }
-
-
 }
