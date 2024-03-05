@@ -39,10 +39,10 @@ public class CaseController {
         return new ResponseEntity<>(caseService.deleteCase(id), HttpStatus.OK);
     }
 
-//    @PutMapping
-//    public ResponseEntity<String> editCase(@RequestBody CaseRequestDto caseRequestDto) {
-//        return new ResponseEntity<>(caseService.editCase(caseRequestDto), HttpStatus.OK);
-//    }  -TODO editCase methodu yoxdur
+    @PutMapping
+    public ResponseEntity<String> editCase(@RequestBody CaseRequestDto caseRequestDto) {
+        return new ResponseEntity<>(caseService.editCase(caseRequestDto), HttpStatus.OK);
+    }
 
 
 }

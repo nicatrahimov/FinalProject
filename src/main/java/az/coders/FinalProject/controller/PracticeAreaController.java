@@ -22,11 +22,26 @@ public class PracticeAreaController {
         return new ResponseEntity<>(practiceAreaService.getAll(), HttpStatusCode.valueOf(200));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<PracticeAreaResponseDto> getById(@PathVariable String id) {
+        return new ResponseEntity<>(practiceAreaService.getById(id), HttpStatusCode.valueOf(200));
+    }
     @PostMapping
     public ResponseEntity<String> addPracticeArea(@RequestBody PracticeAreaRequestDto practiceAreaResponseDto) {
         return new ResponseEntity<>(practiceAreaService.addPracticeArea(practiceAreaResponseDto), HttpStatusCode.valueOf(200));
     }
 
-//    TODO edit practice area with id or name
+    @PutMapping
+    public ResponseEntity<String> editPracticeArea(@RequestBody PracticeAreaRequestDto practiceAreaRequestDto) {
+        return new ResponseEntity<>(practiceAreaService.editPracticeArea(practiceAreaRequestDto), HttpStatusCode.valueOf(200));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deletePracticeArea(@PathVariable String id) {
+        return new ResponseEntity<>(practiceAreaService.deletePracticeArea(id), HttpStatusCode.valueOf(200));
+    }
+
+
+
 
 }

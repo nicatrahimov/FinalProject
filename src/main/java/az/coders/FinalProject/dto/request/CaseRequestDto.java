@@ -32,8 +32,6 @@ public class CaseRequestDto {
     LocalDate dueDate;
     @Pattern(regexp = "OPEN|IN_PROGRESS|CLOSED", message = "Case stage should be OPEN, IN_PROGRESS or CLOSED")
     String office;
-    @Pattern(regexp = "Head Office|Branch Office|Regional Office|Home Office", message = "Case stage should be Head Office, Branch Office, Regional Office or Home Office")
-    String caseStage;
     String base64;
     String practiceAreaId;
 }

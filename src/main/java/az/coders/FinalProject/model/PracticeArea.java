@@ -32,6 +32,6 @@ public class PracticeArea {
     Image image;
 
     @OneToMany(mappedBy = "practiceArea")
-    List<Case> cases = new ArrayList<>();
+    List<Case> cases;
 
 }

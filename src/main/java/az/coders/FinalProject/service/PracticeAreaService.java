@@ -10,5 +10,11 @@ import java.util.List;
 public interface PracticeAreaService {
     List<PracticeAreaResponseDto> getAll();
 
+    PracticeAreaResponseDto getById(String id);
     String addPracticeArea(PracticeAreaRequestDto practiceAreaRequestDto);
+
+    String editPracticeArea(PracticeAreaRequestDto practiceAreaRequestDto);
+
+    String deletePracticeArea(String id);
+
 }

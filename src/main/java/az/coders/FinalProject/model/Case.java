@@ -55,7 +55,6 @@ public class Case {
 
 
     @OneToOne(mappedBy = "aCase", fetch = FetchType.LAZY)
-    @JsonIgnore
     Company company;
 
 }

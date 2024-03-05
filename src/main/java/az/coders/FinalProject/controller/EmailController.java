@@ -19,5 +19,4 @@ public class EmailController {
         return new
                 ResponseEntity<>(mailSenderService.sendEmail(mailDto), HttpStatus.OK);
     }
-
 }

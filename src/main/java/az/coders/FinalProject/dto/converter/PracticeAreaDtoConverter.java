@@ -25,8 +25,14 @@ public class PracticeAreaDtoConverter {
                 .image(imageDtoConverter.toImageResponseDto(practiceArea.getImage()))
                 .build();
         if (practiceArea.getCases().isEmpty()) {
+            practiceArea.setIsActiveCase(false);
             build.setIsActiveCase(false);
-        } else build.setIsActiveCase(true);
+            practiceAreaRepository.save(practiceArea);
+        } else{
+            practiceArea.setIsActiveCase(true);
+            build.setIsActiveCase(true);
+            practiceAreaRepository.save(practiceArea);
+        }
         return build;
     }
 
@@ -55,7 +61,7 @@ public class PracticeAreaDtoConverter {
                 .name(practiceAreaRequestDto.getName())
                 .city(practiceAreaRequestDto.getCity())
                 .image(imageDtoConverter.toImage(practiceAreaRequestDto.getImage()))
+                .isActiveCase(false)
                 .build();
-
     }
 }

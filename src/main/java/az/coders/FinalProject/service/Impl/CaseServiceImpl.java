@@ -37,7 +37,7 @@ public class CaseServiceImpl implements CaseService {
 
     @Override
     public String addCase(CaseRequestDto caseRequestDto) {
-        if (caseRequestDto==null){
+        if (caseRequestDto.getId()==null){
             throw new NullPointerException("Case can not be null");
         }
         Case aCase = caseDtoConverter.toEntity(caseRequestDto);
@@ -53,5 +53,15 @@ public class CaseServiceImpl implements CaseService {
         caseRepository.findById(id).orElseThrow(() -> new RuntimeException("Case not found with id: " + id));
         caseRepository.deleteById(id);
         return "Successfully deleted:" + id;
+    }
+
+    @Override
+    public String editCase(CaseRequestDto caseRequestDto) {
+        if (caseRequestDto==null){
+            throw new NullPointerException("Case can not be null");
+        }
+        Case aCase = caseDtoConverter.toEntity(caseRequestDto);
+        caseRepository.save(aCase);
+        return "Case edited successfully";
     }
 }

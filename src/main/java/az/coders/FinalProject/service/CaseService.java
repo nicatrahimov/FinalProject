@@ -16,4 +16,6 @@ public interface CaseService {
     String addCase(CaseRequestDto caseRequestDto);
 
     String deleteCase(String id);
+
+    String editCase(CaseRequestDto caseRequestDto);
 }
